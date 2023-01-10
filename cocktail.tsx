@@ -7,16 +7,18 @@ import { Text, View } from 'react-native';
 
 class Cocktail extends React.Component{
   state = {}
+
   render(){
     return (
     <View
       style={{
-        color: "green",
         backgroundColor: "red",
         justifyContent: "center",
         alignItems: "center"
       }}>
-      <Text>Vodka, Orange Juice and Cointreau</Text>
+      <Text style={{
+        color: "green"
+        }}>Vodka, Orange Juice and Cointreau</Text>
     </View>
     )
   }
