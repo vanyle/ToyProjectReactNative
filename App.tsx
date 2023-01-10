@@ -21,7 +21,7 @@ import {
 import {
   Colors,
 } from "react-native/Libraries/NewAppScreen";
-import CocktailComponent from "./cocktail";
+import Cocktail from "./cocktail";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -48,7 +48,7 @@ const App: () => Node = () => {
         <View>
         <Text style={{fontSize: 40}}>Welcome to the Cocktail app!</Text>
         </View>
-        <CocktailComponent/>
+        <Cocktail/>
         </View>
       </ScrollView>
     </SafeAreaView>

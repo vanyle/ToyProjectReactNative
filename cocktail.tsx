@@ -5,7 +5,7 @@ A component to display the details of a cocktail.
 import React from 'react';
 import { Text, View } from 'react-native';
 
-class CocktailComponent extends React.Component{
+class Cocktail extends React.Component{
   state = {}
   render(){
     return (
@@ -22,4 +22,4 @@ class CocktailComponent extends React.Component{
   }
 }
 
-export default CocktailComponent;
+export default Cocktail;
