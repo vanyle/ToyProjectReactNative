@@ -29,7 +29,7 @@ class Cocktail extends React.Component{
           fontSize: 10,
           margin: 10,
         }}>
-          { this.props.description.substring(50) + "..." }
+          { this.props.description.substring(0, 50) + "..." }
         </Text>
     </View>
     )
