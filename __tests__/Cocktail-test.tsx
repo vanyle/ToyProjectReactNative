@@ -11,5 +11,6 @@ import renderer from 'react-test-renderer';
 import Cocktail from '../cocktail';
 
 it('renders correctly', () => {
-  renderer.create(<Cocktail />);
+  const tree = renderer.create(<Cocktail />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
