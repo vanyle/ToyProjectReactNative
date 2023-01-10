@@ -1,6 +1,8 @@
 import React from "react";
 import type { Node } from "react";
 
+
+import data from "./dataTest.json"
 import {
   SafeAreaView,
   ScrollView,
@@ -8,6 +10,7 @@ import {
   useColorScheme,
   View,
   Text,
+  FlatList,
 } from "react-native";
 
 import {
@@ -40,7 +43,11 @@ const App: () => Node = () => {
         <View>
         <Text style={{fontSize: 40}}>Welcome to the Cocktail app!</Text>
         </View>
-        <Cocktail/>
+        <FlatList data={data.drinks}
+        renderItem={({item}) => {
+          return (<Cocktail name={item.strDrink} description={item.strInstructions} />)
+        }}>
+        </FlatList>
         </View>
       </ScrollView>
     </SafeAreaView>
