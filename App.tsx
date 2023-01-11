@@ -1,12 +1,8 @@
 import React from "react";
-
-import data from "./dataTest.json"
 import {
   SafeAreaView,
   StatusBar,
-  useColorScheme,
   View,
-  Text,
 } from "react-native";
 
 import {
@@ -16,20 +12,22 @@ import {
 import HeaderBar from "./HeaderBar";
 import RecipesView from "./RecipesView";
 import DetailedCocktailView from "./DetailedCocktailView";
+/*
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
-const isDarkMode = false; //useColorScheme() === "dark";
 
 function ApplicationTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Recipes" component={HomeScreen} />
-      <Tab.Screen name="Favorite" component={SettingsScreen} />
-      <Tab.Screen name="Random" component={SettingsScreen} />
+    <Tab.Screen name="Recipes" component={HomeScreen} />
+    <Tab.Screen name="Favorite" component={SettingsScreen} />
+    <Tab.Screen name="Random" component={SettingsScreen} />
     </Tab.Navigator>
-  );
-}
+    );
+  }*/
+
+const isDarkMode = false; //useColorScheme() === "dark";
 
 class App extends React.Component{
   state = {

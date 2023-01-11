@@ -2,9 +2,6 @@ import React from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { Icon } from '@rneui/themed';
 import PropTypes from 'prop-types';
-import data from "./dataTest.json";
-
-const dIdx = 10;
 
 class DetailedCocktailView extends React.Component{
     ingredients: string[] = [];
@@ -18,13 +15,12 @@ class DetailedCocktailView extends React.Component{
         isLoading: true,
         isError: false
     }
-    props: {onBack: () => void} = {
-        onBack: () => {}
-    }
+    onBack: () => void;
 
     constructor(props: {cocktailId: number, onBack: () => void}){
         super(props);
         this.state.cid = props.cocktailId;
+        this.onBack = props.onBack;
     }
     static get propTypes() { 
         return { 
@@ -62,7 +58,7 @@ class DetailedCocktailView extends React.Component{
                    isLoading: false
                 }
             });
-        }).catch((err) => {
+        }).catch(() => {
             this.setState(() => {
                 return {
                   isError: true,
@@ -103,7 +99,7 @@ class DetailedCocktailView extends React.Component{
                         fontWeight: "bold"
                     }}>No internet</Text>
                 <Icon name="angle-right" onPress={() => {
-                    this.props.onBack();
+                    this.onBack();
                 }} size={30} color="#000" type="font-awesome"></Icon>
             </View>
             <View style={{
@@ -132,7 +128,7 @@ class DetailedCocktailView extends React.Component{
                         fontWeight: "bold"
                     }}>{this.state.title}</Text>
                 <Icon name="angle-right" onPress={() => {
-                    this.props.onBack();
+                    this.onBack();
                 }} size={30} color="#000" type="font-awesome"></Icon>
             </View>
             <View style={{

@@ -34,7 +34,7 @@ class RecipesView extends React.Component{
         });
 
         fetch(this.fetchUrl).then((res) => res.json()).then(async (data) => {
-            const transformedData = data.drinks.map((d: any) => {
+            const transformedData = data.drinks.map((d: {strDrink: string, strInstructions: string, idDrink: string}) => {
                 return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
             });
             this.setState(() => {
@@ -54,7 +54,7 @@ class RecipesView extends React.Component{
         });
     }
     componentDidMount() {
-        this.componentDidUpdate({});
+        this.componentDidUpdate({fetchUrl: undefined});
     }
   
     static get propTypes() { 
