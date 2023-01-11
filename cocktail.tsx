@@ -2,24 +2,54 @@
 A component to display the details of a cocktail.
 */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import PropTypes from 'prop-types';
 
-class CocktailComponent extends React.Component{
-  state = {}
+class Cocktail extends React.Component{
+  state: {name: string, description: string} = {
+    name: "",
+    description: ""
+  }
+  
+  constructor(props: {name: string, description: string}){
+    super(props);
+    this.state.name = props.name;
+    this.state.description = props.description
+    if(this.state.description.length > 50){
+      this.state.description = this.state.description.substring(0, 50) + "...";
+    }
+  }
+
+  static get propTypes() { 
+    return { 
+        description: PropTypes.string, 
+        name: PropTypes.string 
+    }; 
+  }
+
   render(){
     return (
     <View
       style={{
-        color: "green",
-        backgroundColor: "red",
         justifyContent: "center",
         alignItems: "center"
       }}>
-      <Text>Vodka, Orange Juice and Cointreau</Text>
+      <Text style={{
+        color: "green",
+        fontSize: 20,
+        }}>
+         { this.state.name }
+        </Text>
+        <Text style={{
+          fontSize: 10,
+          margin: 10,
+        }}>
+          { this.state.description.substring(0, 50) + "..." }
+        </Text>
     </View>
     )
   }
 }
 
-export default CocktailComponent;
+export default Cocktail;

@@ -1,29 +1,22 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from "react";
 import type { Node } from "react";
 
+
+import data from "./dataTest.json"
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   useColorScheme,
   View,
   Text,
+  FlatList,
 } from "react-native";
 
 import {
   Colors,
-  Header,
 } from "react-native/Libraries/NewAppScreen";
-import CocktailComponent from "./cocktail";
+import Cocktail from "./cocktail";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -42,7 +35,7 @@ const App: () => Node = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}
       >
-        <View
+      <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}
@@ -50,30 +43,16 @@ const App: () => Node = () => {
         <View>
         <Text style={{fontSize: 40}}>Welcome to the Cocktail app!</Text>
         </View>
-        <CocktailComponent/>
+        <FlatList data={data.drinks}
+        renderItem={({item}) => {
+          return (<Cocktail name={item.strDrink} description={item.strInstructions} />)
+        }}>
+        </FlatList>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-});
 
 export default App;
