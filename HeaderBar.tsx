@@ -6,7 +6,7 @@ import React from "react";
 import { Text, View } from "react-native";
 
 class HeaderBar extends React.Component{
-    constructor(props: object){
+    constructor(props: {onSearch: (input: string) => void}){
         super(props)
     }
     render(): React.ReactNode {

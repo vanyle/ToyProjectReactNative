@@ -33,11 +33,17 @@ class Cocktail extends Component{
     <View
       style={{
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "flex-start",
+        padding: 5,
+        width: "100 %",
+        margin: 5,
+        borderLeftWidth: 3,
+        borderLeftColor: "#aaa"
       }}>
       <Text style={{
         color: "green",
         fontSize: 20,
+        textAlign: "left"
         }}>
          { this.state.name }
         </Text>

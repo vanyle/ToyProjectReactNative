@@ -4,8 +4,7 @@
 
 import React from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
-import Cocktail from "./cocktail";
-import data from "./dataTest.json";
+import Cocktail from "./Cocktail";
 import PropTypes from 'prop-types';
 
 class RecipesView extends React.Component{
@@ -64,7 +63,11 @@ class RecipesView extends React.Component{
             )
         }else{
             return (
-                <FlatList data={this.state.drinks}
+                <FlatList
+                style={{
+                    width: "100 %",
+                }}
+                data={this.state.drinks}
                 renderItem={({item}) => {
                     return (<Cocktail name={item.name} description={item.description} />)
                 }}>
