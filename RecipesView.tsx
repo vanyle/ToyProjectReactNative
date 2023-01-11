@@ -3,9 +3,8 @@
  */
 
 import React from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
-import Cocktail from "./cocktail";
-import data from "./dataTest.json";
+import { ActivityIndicator, FlatList, View, Text } from "react-native";
+import Cocktail from "./Cocktail";
 import PropTypes from 'prop-types';
 
 class RecipesView extends React.Component{
@@ -18,14 +17,24 @@ class RecipesView extends React.Component{
     constructor(props: {fetchUrl: string}) {
         super(props);
         this.state.drinks = [];
-        // strDrink, strInstructions
-        // perform the fetch.
-        console.log("Fetching from: ",props.fetchUrl);
-        fetch(props.fetchUrl).then((res) => res.json()).then(async (data) => {
+        this.props.fetchUrl = props.fetchUrl.toLowerCase();        
+    }
+    componentDidUpdate(prevProps){
+        
+        if(typeof prevProps === "undefined" || this.props.fetchUrl == prevProps.fetchUrl){
+            return;
+        }
+        console.log("Fetching from: ",this.props.fetchUrl);
+
+        this.setState({
+            isLoading: true,
+            isError: false
+        });
+
+        fetch(this.props.fetchUrl).then((res) => res.json()).then(async (data) => {
             const transformedData = data.drinks.map((d: any) => {
                 return {name: d.strDrink, description: d.strInstructions}
             });
-            console.log("Transformation performed: ",transformedData);
             this.setState(() => {
                 return {
                    drinks: transformedData,
@@ -42,6 +51,10 @@ class RecipesView extends React.Component{
             });
         });
     }
+    componentDidMount() {
+        this.componentDidUpdate();
+    }
+  
     static get propTypes() { 
         return { 
             fetchUrl: PropTypes.string, 
@@ -51,9 +64,7 @@ class RecipesView extends React.Component{
         if(this.state.isLoading){
             return (
                 <View style={{
-                    justifyContent: "center",
-                    flex: 1,
-                    height: "50%"
+                    padding: 10
                 }}>
                     <ActivityIndicator style={{
                         flexDirection: "row",
@@ -62,9 +73,25 @@ class RecipesView extends React.Component{
                     }} size="large" color="#00ff00" />
                 </View>
             )
+        }else if(this.state.isError){
+            return (
+                <View style={{
+                    padding: 10
+                }}>
+                    <Text style={{
+                        textAlign: "center"
+                    }} size="large" color="#00ff00">
+                        No results found
+                    </Text>
+                </View>
+            )  
         }else{
             return (
-                <FlatList data={this.state.drinks}
+                <FlatList
+                style={{
+                    width: "100 %",
+                }}
+                data={this.state.drinks}
                 renderItem={({item}) => {
                     return (<Cocktail name={item.name} description={item.description} />)
                 }}>
