@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { Icon } from '@rneui/themed';
-
+import PropTypes from 'prop-types';
 import data from "./dataTest.json";
 
 const dIdx = 10;
@@ -13,13 +13,24 @@ class DetailedCocktailView extends React.Component{
         imageURI: "",
         category: "",
         cid: 0,
+        ingredients: [""],
+        instructions: "",
         isLoading: true,
         isError: false
     }
+    props: {onBack: () => void} = {
+        onBack: () => {}
+    }
 
-    constructor(props: {cocktailId: number}){
+    constructor(props: {cocktailId: number, onBack: () => void}){
         super(props);
         this.state.cid = props.cocktailId;
+    }
+    static get propTypes() { 
+        return { 
+            cocktailId: PropTypes.number,
+            onBack: PropTypes.func
+        }; 
     }
     componentDidMount(){
         const url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + this.state.cid;
@@ -31,10 +42,10 @@ class DetailedCocktailView extends React.Component{
 
         fetch(url).then((res) => res.json()).then(async (data) => {
             console.log(data);
-            let ingredients: string[] = [];
+            const ingredients: string[] = [];
 
             for(let i = 1; i <= 15;i++){
-                let ing: string | null = data.drinks[0]["strIngredient" + i];
+                const ing: string | null = data.drinks[0]["strIngredient" + i];
                 if(ing !== null){
                     ingredients.push(ing);
                 }else{

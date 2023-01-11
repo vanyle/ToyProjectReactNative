@@ -13,26 +13,27 @@ class RecipesView extends React.Component{
         isLoading: true,
         isError: false,
     }
+    fetchUrl: string;
+    onCocktailClicked: (id: number) => void;
 
     constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
         super(props);
         this.state.drinks = [];
-        this.props.onCocktailClicked = props.onCocktailClicked;
-        this.props.fetchUrl = props.fetchUrl.toLowerCase();        
+        this.onCocktailClicked = props.onCocktailClicked;
+        this.fetchUrl = props.fetchUrl.toLowerCase();        
     }
-    componentDidUpdate(prevProps){
-        
-        if(typeof prevProps !== "undefined" && this.props.fetchUrl == prevProps.fetchUrl){
+    componentDidUpdate(prevProps: {fetchUrl: string | undefined}){
+        if(this.fetchUrl === prevProps.fetchUrl){
             return;
         }
-        console.log("Fetching from: ",this.props.fetchUrl);
+        console.log("Fetching from: ",this.fetchUrl);
 
         this.setState({
             isLoading: true,
             isError: false
         });
 
-        fetch(this.props.fetchUrl).then((res) => res.json()).then(async (data) => {
+        fetch(this.fetchUrl).then((res) => res.json()).then(async (data) => {
             const transformedData = data.drinks.map((d: any) => {
                 return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
             });
@@ -53,13 +54,13 @@ class RecipesView extends React.Component{
         });
     }
     componentDidMount() {
-        this.componentDidUpdate();
+        this.componentDidUpdate({});
     }
   
     static get propTypes() { 
         return { 
             fetchUrl: PropTypes.string,
-            onCocktailClick: PropTypes.func
+            onCocktailClicked: PropTypes.func
         }; 
     }
     render(): React.ReactNode {
@@ -82,7 +83,7 @@ class RecipesView extends React.Component{
                 }}>
                     <Text style={{
                         textAlign: "center"
-                    }} size="large" color="#00ff00">
+                    }}>
                         No results found
                     </Text>
                 </View>
@@ -96,7 +97,7 @@ class RecipesView extends React.Component{
                 data={this.state.drinks}
                 renderItem={({item}) => {
                     return (<Cocktail onClick={() => {
-                        this.props.onCocktailClicked(item.id)
+                        this.onCocktailClicked(item.id)
                     }} name={item.name} description={item.description} />)
                 }}>
                 </FlatList>

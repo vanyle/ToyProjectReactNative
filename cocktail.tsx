@@ -14,13 +14,13 @@ class Cocktail extends Component{
     isFavorite: false,
   }
   onClick: () => void;
-  
+
   constructor(props: {name: string, description: string, onClick: () => void}){
     super(props);
     this.onClick = props.onClick;
     this.state.name = props.name;
     this.state.isFavorite = Math.random() > 0.8;
-    this.state.description = props.description
+    this.state.description = props.description;
   }
 
   static get propTypes() { 
@@ -49,7 +49,7 @@ class Cocktail extends Component{
         flexShrink:1
       }}
       onPress={() => {
-        this.props.onClick();
+        this.onClick();
       }}>
       <View style={{
         flexShrink:1

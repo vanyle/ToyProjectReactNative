@@ -1,6 +1,4 @@
 import React from "react";
-import type { Node } from "react";
-
 
 import data from "./dataTest.json"
 import {
@@ -18,22 +16,34 @@ import {
 import HeaderBar from "./HeaderBar";
 import RecipesView from "./RecipesView";
 import DetailedCocktailView from "./DetailedCocktailView";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+const Tab = createBottomTabNavigator();
 const isDarkMode = false; //useColorScheme() === "dark";
+
+function ApplicationTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Recipes" component={HomeScreen} />
+      <Tab.Screen name="Favorite" component={SettingsScreen} />
+      <Tab.Screen name="Random" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
+}
 
 class App extends React.Component{
   state = {
-    searchQuery: "a",
-    inCocktailView: true,
-    displayedCocktailId: 10
+    searchQuery: "",
+    inCocktailView: false,
+    displayedCocktailId: 0
   }
-  constructor(props){
+
+  constructor(props: object){
     super(props);
     this.handleSearch = this.handleSearch.bind(this);
   }
   handleSearch(text: string){
     this.setState(() => {
-      // console.log(this.state.searchQuery);
       return {
         searchQuery: text
       }
