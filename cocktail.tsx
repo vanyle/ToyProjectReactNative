@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-class Cocktail extends React.Component{
+class Cocktail extends Component{
   state: {name: string, description: string} = {
     name: "",
     description: ""

@@ -5,18 +5,18 @@ import type { Node } from "react";
 import data from "./dataTest.json"
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   useColorScheme,
   View,
   Text,
-  FlatList,
 } from "react-native";
 
 import {
   Colors,
 } from "react-native/Libraries/NewAppScreen";
-import Cocktail from "./cocktail";
+
+import HeaderBar from "./HeaderBar";
+import RecipesView from "./RecipesView";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -31,25 +31,15 @@ const App: () => Node = () => {
         barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}
-      >
       <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}
         >
-        <View>
-        <Text style={{fontSize: 40}}>Welcome to the Cocktail app!</Text>
+        <HeaderBar/>
+        
+        <RecipesView fetchUrl="https://www.thecocktaildb.com/api/json/v1/1/search.php?f=b"/>
         </View>
-        <FlatList data={data.drinks}
-        renderItem={({item}) => {
-          return (<Cocktail name={item.strDrink} description={item.strInstructions} />)
-        }}>
-        </FlatList>
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
