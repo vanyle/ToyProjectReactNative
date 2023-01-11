@@ -3,7 +3,7 @@ A component to display the details of a cocktail.
 */
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from '@rneui/themed';
 
@@ -13,9 +13,11 @@ class Cocktail extends Component{
     description: "",
     isFavorite: false,
   }
+  onClick: () => void;
   
-  constructor(props: {name: string, description: string}){
+  constructor(props: {name: string, description: string, onClick: () => void}){
     super(props);
+    this.onClick = props.onClick;
     this.state.name = props.name;
     this.state.isFavorite = Math.random() > 0.8;
     this.state.description = props.description
@@ -24,7 +26,8 @@ class Cocktail extends Component{
   static get propTypes() { 
     return { 
         description: PropTypes.string, 
-        name: PropTypes.string 
+        name: PropTypes.string,
+        onClick: PropTypes.func
     }; 
   }
 
@@ -41,6 +44,12 @@ class Cocktail extends Component{
         flex: 1,
         borderLeftWidth: 6,
         borderLeftColor: "#aaa"
+      }}>
+      <TouchableOpacity style={{
+        flexShrink:1
+      }}
+      onPress={() => {
+        this.props.onClick();
       }}>
       <View style={{
         flexShrink:1
@@ -62,8 +71,9 @@ class Cocktail extends Component{
           { this.state.description }
         </Text>
         </View>
+        </TouchableOpacity>
         <Icon reverse name='star' onPress={() => {
-          this.setState((state) => {
+          this.setState((state: {isFavorite: boolean}) => {
             return {
               isFavorite: !state.isFavorite
             }

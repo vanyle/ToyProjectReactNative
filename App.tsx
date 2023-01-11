@@ -17,12 +17,15 @@ import {
 
 import HeaderBar from "./HeaderBar";
 import RecipesView from "./RecipesView";
+import DetailedCocktailView from "./DetailedCocktailView";
 
 const isDarkMode = false; //useColorScheme() === "dark";
 
 class App extends React.Component{
   state = {
-    searchQuery: "a"
+    searchQuery: "a",
+    inCocktailView: true,
+    displayedCocktailId: 10
   }
   constructor(props){
     super(props);
@@ -40,23 +43,51 @@ class App extends React.Component{
     const backgroundStyle = {
       backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
-
-    return (
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? "light-content" : "dark-content"}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}
-          >
-          <HeaderBar onSearch={this.handleSearch}/>
-          <RecipesView fetchUrl={"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + this.state.searchQuery}/>
+    if(this.state.inCocktailView){
+      return (
+        <SafeAreaView style={backgroundStyle}>
+          <StatusBar
+            barStyle={isDarkMode ? "light-content" : "dark-content"}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+          <View
+              style={{
+                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+              }}
+            >
+            <DetailedCocktailView cocktailId={this.state.displayedCocktailId} onBack={() => {
+              this.setState({
+                inCocktailView: false
+              })
+            }}/>
           </View>
-      </SafeAreaView>
-    );
+        </SafeAreaView>
+      );
+    }else{
+      return (
+        <SafeAreaView style={backgroundStyle}>
+          <StatusBar
+            barStyle={isDarkMode ? "light-content" : "dark-content"}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+          <View
+              style={{
+                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+              }}
+            >
+            <HeaderBar onSearch={this.handleSearch}/>
+            <RecipesView 
+            onCocktailClicked={(cocktailId) => {
+                this.setState({
+                  displayedCocktailId: cocktailId,
+                  inCocktailView: true
+                })
+            }}
+            fetchUrl={"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + this.state.searchQuery}/>
+          </View>
+        </SafeAreaView>
+      );
+    }
   }
 }
 
