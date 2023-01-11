@@ -8,20 +8,21 @@ import Cocktail from "./Cocktail";
 import PropTypes from 'prop-types';
 
 class RecipesView extends React.Component{
-    state: {isLoading: boolean, isError: boolean,drinks: {name: string, description: string}[]} = {
+    state: {isLoading: boolean, isError: boolean,drinks: {name: string, description: string, id: number}[]} = {
         drinks: [],
         isLoading: true,
         isError: false,
     }
 
-    constructor(props: {fetchUrl: string}) {
+    constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
         super(props);
         this.state.drinks = [];
+        this.props.onCocktailClicked = props.onCocktailClicked;
         this.props.fetchUrl = props.fetchUrl.toLowerCase();        
     }
     componentDidUpdate(prevProps){
         
-        if(typeof prevProps === "undefined" || this.props.fetchUrl == prevProps.fetchUrl){
+        if(typeof prevProps !== "undefined" && this.props.fetchUrl == prevProps.fetchUrl){
             return;
         }
         console.log("Fetching from: ",this.props.fetchUrl);
@@ -33,7 +34,7 @@ class RecipesView extends React.Component{
 
         fetch(this.props.fetchUrl).then((res) => res.json()).then(async (data) => {
             const transformedData = data.drinks.map((d: any) => {
-                return {name: d.strDrink, description: d.strInstructions}
+                return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
             });
             this.setState(() => {
                 return {
@@ -57,7 +58,8 @@ class RecipesView extends React.Component{
   
     static get propTypes() { 
         return { 
-            fetchUrl: PropTypes.string, 
+            fetchUrl: PropTypes.string,
+            onCocktailClick: PropTypes.func
         }; 
     }
     render(): React.ReactNode {
@@ -93,7 +95,9 @@ class RecipesView extends React.Component{
                 }}
                 data={this.state.drinks}
                 renderItem={({item}) => {
-                    return (<Cocktail name={item.name} description={item.description} />)
+                    return (<Cocktail onClick={() => {
+                        this.props.onCocktailClicked(item.id)
+                    }} name={item.name} description={item.description} />)
                 }}>
                 </FlatList>
             )
