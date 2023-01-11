@@ -19,9 +19,6 @@ class Cocktail extends Component{
     this.state.name = props.name;
     this.state.isFavorite = Math.random() > 0.8;
     this.state.description = props.description
-    if(this.state.description.length > 50){
-      this.state.description = this.state.description.substring(0, 50) + "...";
-    }
   }
 
   static get propTypes() { 
@@ -35,15 +32,19 @@ class Cocktail extends Component{
     return (
     <View
       style={{
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "flex-start",
+        paddingLeft: 10,
+        paddingRight:10,
         flexDirection: "row",
-        width: "100%",
         margin: 5,
+        flex: 1,
         borderLeftWidth: 6,
         borderLeftColor: "#aaa"
       }}>
-      <View>
+      <View style={{
+        flexShrink:1
+      }}>
       <Text style={{
         color: "green",
         fontSize: 20,
@@ -51,11 +52,14 @@ class Cocktail extends Component{
         }}>
          { this.state.name }
         </Text>
-        <Text style={{
+        <Text 
+          numberOfLines={1}
+        style={{
           fontSize: 10,
+          flexShrink: 1,
           margin: 10,
         }}>
-          { this.state.description.substring(0, 50) + "..." }
+          { this.state.description }
         </Text>
         </View>
         <Icon reverse name='star' onPress={() => {
