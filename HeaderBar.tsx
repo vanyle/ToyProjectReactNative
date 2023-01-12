@@ -4,14 +4,17 @@
 
 import React from "react";
 import { Text, TextInput, View } from "react-native";
+import PropTypes from 'prop-types';
 
 class HeaderBar extends React.Component{
     state: {searchText: string} = {
         searchText: ""
     }
+    onSearch: (input: string) => void
+
     constructor(props: {onSearch: (input: string) => void}){
         super(props);
-        this.props.onSearch = props.onSearch;
+        this.onSearch = props.onSearch;
     }
     render(): React.ReactNode {
         return (
@@ -25,10 +28,10 @@ class HeaderBar extends React.Component{
             <TextInput
                 placeholder="Search for an item"
                 onChangeText={(text) => {
-                    this.setState((state) => {
+                    this.setState(() => {
                         return {searchText: text}
                     });
-                    this.props.onSearch(text);
+                    this.onSearch(text);
                 }}
                 style={{
                     padding: 5,
@@ -39,6 +42,11 @@ class HeaderBar extends React.Component{
             />
             </View>
         )
+    }
+    static get propTypes() { 
+        return { 
+            onSearch: PropTypes.func
+        }; 
     }
 }
 

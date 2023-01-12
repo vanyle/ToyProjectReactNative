@@ -1,10 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { Icon } from '@rneui/themed';
-
-import data from "./dataTest.json";
-
-const dIdx = 10;
+import PropTypes from 'prop-types';
 
 class DetailedCocktailView extends React.Component{
     ingredients: string[] = [];
@@ -12,29 +9,34 @@ class DetailedCocktailView extends React.Component{
         title: "",
         imageURI: "",
         category: "",
-        cid: 0,
+        lookupUrl: "",
+        ingredients: [""],
+        instructions: "",
         isLoading: true,
         isError: false
     }
+    onBack: () => void | undefined;
 
-    constructor(props: {cocktailId: number}){
+    constructor(props: {lookupURL: string, onBack: () => void | undefined}){
         super(props);
-        this.state.cid = props.cocktailId;
+        this.state.lookupUrl = props.lookupURL;
+        this.onBack = props.onBack;
+    }
+    static get propTypes() { 
+        return { 
+            lookupURL: PropTypes.string,
+            onBack: PropTypes.func
+        }; 
     }
     componentDidMount(){
-        const url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + this.state.cid;
-
         this.setState({
             isLoading: true,
             isError: false
         });
-
-        fetch(url).then((res) => res.json()).then(async (data) => {
-            console.log(data);
-            let ingredients: string[] = [];
-
+        fetch(this.state.lookupUrl).then((res) => res.json()).then(async (data) => {
+            const ingredients: string[] = [];
             for(let i = 1; i <= 15;i++){
-                let ing: string | null = data.drinks[0]["strIngredient" + i];
+                const ing: string | null = data.drinks[0]["strIngredient" + i];
                 if(ing !== null){
                     ingredients.push(ing);
                 }else{
@@ -51,7 +53,7 @@ class DetailedCocktailView extends React.Component{
                    isLoading: false
                 }
             });
-        }).catch((err) => {
+        }).catch(() => {
             this.setState(() => {
                 return {
                   isError: true,
@@ -92,7 +94,7 @@ class DetailedCocktailView extends React.Component{
                         fontWeight: "bold"
                     }}>No internet</Text>
                 <Icon name="angle-right" onPress={() => {
-                    this.props.onBack();
+                    this.onBack();
                 }} size={30} color="#000" type="font-awesome"></Icon>
             </View>
             <View style={{
@@ -120,10 +122,15 @@ class DetailedCocktailView extends React.Component{
                         fontSize: 30,
                         fontWeight: "bold"
                     }}>{this.state.title}</Text>
-                <Icon name="angle-right" onPress={() => {
-                    this.props.onBack();
-                }} size={30} color="#000" type="font-awesome"></Icon>
-            </View>
+
+                { typeof this.onBack !== "undefined" ?
+                    (<Icon name="angle-right" onPress={() => {
+                        this.onBack();
+                    }} size={30} color="#000" type="font-awesome"></Icon>)
+                    : <Text></Text>
+                }
+
+                </View>
             <View style={{
                 padding:10
             }}>

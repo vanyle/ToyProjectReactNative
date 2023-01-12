@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from '@rneui/themed';
+import Toast from 'react-native-simple-toast';
 
 class Cocktail extends Component{
   state: {name: string, isFavorite: boolean, description: string} = {
@@ -14,20 +15,28 @@ class Cocktail extends Component{
     isFavorite: false,
   }
   onClick: () => void;
-  
-  constructor(props: {name: string, description: string, onClick: () => void}){
+  onFavorite: (isFavoriteAfterAction: boolean) => void;
+
+  constructor(props: {
+      name: string,
+      description: string,
+      onClick: () => void,
+      onFavorite: (isFav: boolean) => void
+  }){
     super(props);
     this.onClick = props.onClick;
+    this.onFavorite = props.onFavorite;
     this.state.name = props.name;
-    this.state.isFavorite = Math.random() > 0.8;
-    this.state.description = props.description
+    this.state.isFavorite = false;
+    this.state.description = props.description;
   }
 
   static get propTypes() { 
-    return { 
+    return {
         description: PropTypes.string, 
         name: PropTypes.string,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        onFavorite: PropTypes.func,
     }; 
   }
 
@@ -42,14 +51,14 @@ class Cocktail extends Component{
         flexDirection: "row",
         margin: 5,
         flex: 1,
-        borderLeftWidth: 6,
-        borderLeftColor: "#aaa"
+        borderLeftWidth: 3,
+        borderLeftColor: "#333"
       }}>
       <TouchableOpacity style={{
         flexShrink:1
       }}
       onPress={() => {
-        this.props.onClick();
+        this.onClick();
       }}>
       <View style={{
         flexShrink:1
@@ -73,6 +82,11 @@ class Cocktail extends Component{
         </View>
         </TouchableOpacity>
         <Icon reverse name='star' onPress={() => {
+          if(!this.state.isFavorite){
+            Toast.show(this.state.name + " added to favorites.", 2, {});
+          }else{
+            Toast.show(this.state.name + " removed from favorites.", 2, {});
+          }
           this.setState((state: {isFavorite: boolean}) => {
             return {
               isFavorite: !state.isFavorite
