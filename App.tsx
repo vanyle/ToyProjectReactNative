@@ -1,7 +1,8 @@
 import React from "react";
 import {
-  SafeAreaView,
   StatusBar,
+  useColorScheme,
+  useWindowDimensions,
   View,
 } from "react-native";
 
@@ -9,26 +10,62 @@ import {
   Colors,
 } from "react-native/Libraries/NewAppScreen";
 
-import HeaderBar from "./HeaderBar";
-import RecipesView from "./RecipesView";
-import DetailedCocktailView from "./DetailedCocktailView";
-/*
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { MainTab, RandomTab, FavoriteTab } from "./Tabs";
 
-const Tab = createBottomTabNavigator();
+const renderScene = SceneMap({
+  recipe: MainTab,
+  random: RandomTab,
+  favorite: FavoriteTab
+});
 
-function ApplicationTabs() {
+const renderTabBar = (props: any) => (
+  <TabBar
+    {...props}
+    indicatorStyle={{ backgroundColor: '#333' }}
+    style={{ backgroundColor: '#0a0' }}
+  />
+);
+
+function App(){
+  const layout = useWindowDimensions();
+  const isDarkMode = useColorScheme() === "dark";
+    
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'recipe', title: 'Recipes' },
+    { key: 'favorite', title: 'Favorites' },
+    { key: 'random', title: 'Random' },
+  ]);
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  
   return (
-    <Tab.Navigator>
-    <Tab.Screen name="Recipes" component={HomeScreen} />
-    <Tab.Screen name="Favorite" component={SettingsScreen} />
-    <Tab.Screen name="Random" component={SettingsScreen} />
-    </Tab.Navigator>
-    );
-  }*/
+    <View style={{
+      width: layout.width,
+      height: layout.height
+    }}>
+      <StatusBar
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={renderTabBar}
 
-const isDarkMode = false; //useColorScheme() === "dark";
+        style={{
+          marginTop: 45 /* Hardcoded value, this is problematic */
+        }}
+      />
+      </View>
+  );
+}
 
+/*
 class App extends React.Component{
   state = {
     searchQuery: "",
@@ -48,9 +85,7 @@ class App extends React.Component{
     });
   }
   render() {
-    const backgroundStyle = {
-      backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+
     if(this.state.inCocktailView){
       return (
         <SafeAreaView style={backgroundStyle}>
@@ -71,33 +106,8 @@ class App extends React.Component{
           </View>
         </SafeAreaView>
       );
-    }else{
-      return (
-        <SafeAreaView style={backgroundStyle}>
-          <StatusBar
-            barStyle={isDarkMode ? "light-content" : "dark-content"}
-            backgroundColor={backgroundStyle.backgroundColor}
-          />
-          <View
-              style={{
-                backgroundColor: isDarkMode ? Colors.black : Colors.white,
-              }}
-            >
-            <HeaderBar onSearch={this.handleSearch}/>
-            <RecipesView 
-            onCocktailClicked={(cocktailId) => {
-                this.setState({
-                  displayedCocktailId: cocktailId,
-                  inCocktailView: true
-                })
-            }}
-            fetchUrl={"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + this.state.searchQuery}/>
-          </View>
-        </SafeAreaView>
-      );
-    }
   }
 }
-
+*/
 
 export default App;

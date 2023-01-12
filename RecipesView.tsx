@@ -8,63 +8,25 @@ import Cocktail from "./Cocktail";
 import PropTypes from 'prop-types';
 
 class RecipesView extends React.Component{
-    state: {isLoading: boolean, isError: boolean,drinks: {name: string, description: string, id: number}[]} = {
-        drinks: [],
-        isLoading: true,
-        isError: false,
-    }
-    fetchUrl: string;
-    onCocktailClicked: (id: number) => void;
-
-    constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
+    constructor(props: {
+        isLoading: boolean,
+        isError: boolean,
+        drinks: {name: string, description: string, id: number}[],
+        onCocktailClicked: (id: number) => void
+    }) {
         super(props);
-        this.state.drinks = [];
-        this.onCocktailClicked = props.onCocktailClicked;
-        this.fetchUrl = props.fetchUrl.toLowerCase();        
-    }
-    componentDidUpdate(prevProps: {fetchUrl: string | undefined}){
-        if(this.fetchUrl === prevProps.fetchUrl){
-            return;
-        }
-        console.log("Fetching from: ",this.fetchUrl);
-
-        this.setState({
-            isLoading: true,
-            isError: false
-        });
-
-        fetch(this.fetchUrl).then((res) => res.json()).then(async (data) => {
-            const transformedData = data.drinks.map((d: {strDrink: string, strInstructions: string, idDrink: string}) => {
-                return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
-            });
-            this.setState(() => {
-                return {
-                   drinks: transformedData,
-                   isLoading: false
-                }
-            });
-        }).catch((err) => {
-            console.log(err);
-            this.setState(() => {
-                return {
-                  isError: true,
-                  isLoading: false
-                };
-            });
-        });
-    }
-    componentDidMount() {
-        this.componentDidUpdate({fetchUrl: undefined});
     }
   
     static get propTypes() { 
         return { 
-            fetchUrl: PropTypes.string,
-            onCocktailClicked: PropTypes.func
+            onCocktailClicked: PropTypes.func,
+            drinks: PropTypes.array,
+            isError: PropTypes.bool,
+            isLoading: PropTypes.bool,
         }; 
     }
     render(): React.ReactNode {
-        if(this.state.isLoading){
+        if(this.props.isLoading){
             return (
                 <View style={{
                     padding: 10
@@ -76,7 +38,7 @@ class RecipesView extends React.Component{
                     }} size="large" color="#00ff00" />
                 </View>
             )
-        }else if(this.state.isError){
+        }else if(this.props.isError){
             return (
                 <View style={{
                     padding: 10
@@ -94,10 +56,10 @@ class RecipesView extends React.Component{
                 style={{
                     width: "100 %",
                 }}
-                data={this.state.drinks}
+                data={this.props.drinks}
                 renderItem={({item}) => {
                     return (<Cocktail onClick={() => {
-                        this.onCocktailClicked(item.id)
+                        this.props.onCocktailClicked(item.id)
                     }} name={item.name} description={item.description} />)
                 }}>
                 </FlatList>
