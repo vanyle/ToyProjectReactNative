@@ -12,12 +12,14 @@ import {
 
 import { TabView, SceneMap, TabBar, TabBarProps, Route } from 'react-native-tab-view';
 import { MainTab, RandomTab, FavoriteTab } from "./Tabs";
+import { GlobalContext, defaultValue } from "./favoriteState";
 
 const renderScene = SceneMap({
   recipe: MainTab,
   random: RandomTab,
   favorite: FavoriteTab
 });
+
 
 function renderTabBar<T extends Route>(props: TabBarProps<T>){
   return (<TabBar
@@ -47,20 +49,22 @@ function App(){
       width: layout.width,
       height: layout.height
     }}>
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        renderTabBar={renderTabBar}
+      <GlobalContext.Provider value={defaultValue}>
+        <StatusBar
+          barStyle={isDarkMode ? "light-content" : "dark-content"}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          renderTabBar={renderTabBar}
 
-        style={{
-          marginTop: 45 /* Hardcoded value, this is problematic */
-        }}
-      />
+          style={{
+            marginTop: 45 /* Hardcoded value, this is problematic */
+          }}
+        />
+      </GlobalContext.Provider>
       </View>
   );
 }

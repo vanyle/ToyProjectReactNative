@@ -6,7 +6,11 @@ import React from "react";
 import PropTypes from 'prop-types';
 import RecipesView from "./RecipesView";
 
-type RecipesFetcherProps = {fetchUrl: string, onCocktailClicked: (id: number) => void};
+type RecipesFetcherProps = {
+    fetchUrl: string,
+    onCocktailClicked: (id: number) => void,
+    onCocktailFavorite: (id: number, status: boolean) => void,
+};
 
 export default class RecipesFetcher extends React.Component<RecipesFetcherProps>{
     state: {isLoading: boolean, isError: boolean,drinks: {name: string, description: string, id: number}[]} = {
@@ -15,7 +19,7 @@ export default class RecipesFetcher extends React.Component<RecipesFetcherProps>
         isError: false,
     }
 
-    constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
+    constructor(props: RecipesFetcherProps) {
         super(props);
         this.state.drinks = [];  
     }
@@ -36,7 +40,6 @@ export default class RecipesFetcher extends React.Component<RecipesFetcherProps>
             const transformedData = data.drinks.map((d: {strDrink: string, strInstructions: string, idDrink: string}) => {
                 return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
             });
-            console.log("Data fetched!")
             this.setState(() => {
                 return {
                    drinks: transformedData,
@@ -67,6 +70,7 @@ export default class RecipesFetcher extends React.Component<RecipesFetcherProps>
     render(): React.ReactNode {
         return <RecipesView 
             onCocktailClicked={this.props.onCocktailClicked} 
+            onCocktailFavorite={this.props.onCocktailFavorite}
             isLoading={this.state.isLoading}
             isError={this.state.isError}
             drinks={this.state.drinks}
