@@ -12,6 +12,7 @@ type RecipesViewProps = {
     isError: boolean,
     drinks: {name: string, description: string, id: number}[],
     onCocktailClicked: (id: number) => void
+    onCocktailFavorite: (id: number, status: boolean) => void;
 } 
 
 class RecipesView extends React.Component<RecipesViewProps>{
@@ -60,9 +61,18 @@ class RecipesView extends React.Component<RecipesViewProps>{
                 }}
                 data={this.props.drinks}
                 renderItem={({item}) => {
-                    return (<Cocktail onClick={() => {
-                        this.props.onCocktailClicked(item.id)
-                    }} name={item.name} description={item.description} />)
+                    return (
+                        <Cocktail
+                            onClick={() => {
+                                this.props.onCocktailClicked(item.id)
+                            }}
+                            onFavorite={(status: boolean) => {
+                                this.props.onCocktailFavorite(item.id, status);
+                            }}
+                            id={item.id}
+                            name={item.name}
+                            description={item.description}
+                        />)
                 }}>
                 </FlatList>
             )

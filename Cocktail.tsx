@@ -7,25 +7,26 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from '@rneui/themed';
 import Toast from 'react-native-simple-toast';
+import { GlobalContext } from './favoriteState';
 
-class Cocktail extends Component{
+type CocktailProps = {
+  name: string,
+  description: string,
+  id: number,
+  onClick: () => void,
+  onFavorite: (isFav: boolean) => void
+};
+
+class Cocktail extends Component<CocktailProps> {
   state: {name: string, isFavorite: boolean, description: string} = {
     name: "",
     description: "",
     isFavorite: false,
   }
-  onClick: () => void;
-  onFavorite: (isFavoriteAfterAction: boolean) => void;
 
-  constructor(props: {
-      name: string,
-      description: string,
-      onClick: () => void,
-      onFavorite: (isFav: boolean) => void
-  }){
+  constructor(props: CocktailProps){
     super(props);
-    this.onClick = props.onClick;
-    this.onFavorite = props.onFavorite;
+    
     this.state.name = props.name;
     this.state.isFavorite = false;
     this.state.description = props.description;
@@ -58,7 +59,7 @@ class Cocktail extends Component{
         flexShrink:1
       }}
       onPress={() => {
-        this.onClick();
+        this.props.onClick();
       }}>
       <View style={{
         flexShrink:1
@@ -87,6 +88,7 @@ class Cocktail extends Component{
           }else{
             Toast.show(this.state.name + " removed from favorites.", 2, {});
           }
+          this.props.onFavorite(!this.state.isFavorite);
           this.setState((state: {isFavorite: boolean}) => {
             return {
               isFavorite: !state.isFavorite
