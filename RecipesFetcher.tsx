@@ -6,14 +6,14 @@ import React from "react";
 import PropTypes from 'prop-types';
 import RecipesView from "./RecipesView";
 
-export default class RecipesFetcher extends React.Component{
+type RecipesFetcherProps = {fetchUrl: string, onCocktailClicked: (id: number) => void};
+
+export default class RecipesFetcher extends React.Component<RecipesFetcherProps>{
     state: {isLoading: boolean, isError: boolean,drinks: {name: string, description: string, id: number}[]} = {
         drinks: [],
         isLoading: true,
         isError: false,
     }
-    // declare means that swear to eslint that we initialize props so it does not have to worry.
-    declare props: {fetchUrl: string, onCocktailClicked: (id: number) => void};
 
     constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
         super(props);
