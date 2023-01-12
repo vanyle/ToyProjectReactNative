@@ -36,7 +36,6 @@ export default class RecipesFetcher extends React.Component<RecipesFetcherProps>
             const transformedData = data.drinks.map((d: {strDrink: string, strInstructions: string, idDrink: string}) => {
                 return {name: d.strDrink, description: d.strInstructions, id: Number(d.idDrink)}
             });
-            console.log("Data fetched!")
             this.setState(() => {
                 return {
                    drinks: transformedData,

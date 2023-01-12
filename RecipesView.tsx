@@ -7,13 +7,15 @@ import { ActivityIndicator, FlatList, View, Text } from "react-native";
 import Cocktail from "./Cocktail";
 import PropTypes from 'prop-types';
 
-class RecipesView extends React.Component{
-    constructor(props: {
-        isLoading: boolean,
-        isError: boolean,
-        drinks: {name: string, description: string, id: number}[],
-        onCocktailClicked: (id: number) => void
-    }) {
+type RecipesViewProps = {
+    isLoading: boolean,
+    isError: boolean,
+    drinks: {name: string, description: string, id: number}[],
+    onCocktailClicked: (id: number) => void
+} 
+
+class RecipesView extends React.Component<RecipesViewProps>{
+    constructor(props: RecipesViewProps) {
         super(props);
     }
   
