@@ -12,6 +12,8 @@ export default class RecipesFetcher extends React.Component{
         isLoading: true,
         isError: false,
     }
+    // declare means that swear to eslint that we initialize props so it does not have to worry.
+    declare props: {fetchUrl: string, onCocktailClicked: (id: number) => void};
 
     constructor(props: {fetchUrl: string, onCocktailClicked: (id: number) => void}) {
         super(props);

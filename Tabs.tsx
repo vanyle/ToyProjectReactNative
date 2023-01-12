@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from "react";
-import {View, Text} from "react-native";
+import {View} from "react-native";
 import HeaderBar from "./HeaderBar";
 import RecipesView from "./RecipesView";
 
@@ -56,7 +56,7 @@ function FavoriteTab(){
             isLoading={false}
             isError={true}
             drinks={[]}
-            onCocktailClicked={(id) => {
+            onCocktailClicked={() => {
                 // ...
             }}
         />
