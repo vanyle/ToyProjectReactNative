@@ -22,7 +22,7 @@ function MainTab(){
     const handleSearch = (text: string) => {
         setSearchQuery(text);
     };
-    const {addFavorite, removeFavorite} = React.useContext(GlobalContext);
+    const {addFavorite, removeFavorite, favoriteIds} = React.useContext(GlobalContext);
     const [cocktailId, setCocktailId] = useState(0);
     const [isCocktailDisplayed, setCocktailDisplayed] = useState(false);
 
@@ -45,6 +45,7 @@ function MainTab(){
                     }else{
                         removeFavorite(cocktailId);
                     }
+                    console.log("fav edit: ",favoriteIds);
                 }}
                 fetchUrl={"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + searchQuery}
             />
@@ -65,13 +66,7 @@ function MainTab(){
 function FavoriteTab(){
     // A tab with the list of the favorite recipes of the user
     const [cocktailId, setCocktailId] = useState(0);
-    const {addFavorite, removeFavorite, addListener, getFavorites} = React.useContext(GlobalContext);
-    const [favoriteIds, setFavoriteIds] = React.useState(getFavorites()); // fake non owning state.
-
-    addListener((favorites) => {
-        console.log("Listener update: ",favorites);
-        setFavoriteIds(favorites);
-    });
+    const {addFavorite, removeFavorite, favoriteIds} = React.useContext(GlobalContext);
 
     const [isCocktailDisplayed, setCocktailDisplayed] = useState(false);
 

@@ -43,13 +43,25 @@ function App(){
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  
+
+  const [favoriteIds, setFavoriteIds] = React.useState<number[]>([11007]);
+
   return (
     <View style={{
       width: layout.width,
       height: layout.height
     }}>
-      <GlobalContext.Provider value={defaultValue}>
+      <GlobalContext.Provider value={{
+        addFavorite: (id) => {
+          if(favoriteIds.indexOf(id) === -1){
+            setFavoriteIds([...favoriteIds, id]);
+          }
+        },
+        removeFavorite: (id) => {
+          setFavoriteIds(favoriteIds.filter((i) => i != id));
+        },
+        favoriteIds
+      }}>
         <StatusBar
           barStyle={isDarkMode ? "light-content" : "dark-content"}
           backgroundColor={backgroundStyle.backgroundColor}
