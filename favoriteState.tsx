@@ -32,9 +32,7 @@ export function favoriteReducer(favorites: number[], action: Action){
             }else{
                 return favorites;
             }
-            break;
         case ActionType.RemoveFavorite:
             return favorites.filter((i) => i != action.id);
-            break;
     }
 }
