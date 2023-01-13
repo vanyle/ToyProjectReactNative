@@ -12,7 +12,7 @@ import {
 
 import { TabView, SceneMap, TabBar, TabBarProps, Route } from 'react-native-tab-view';
 import { MainTab, RandomTab, FavoriteTab } from "./Tabs";
-import { GlobalContext, defaultValue } from "./favoriteState";
+import { GlobalContext, defaultValue, favoriteReducer, ActionType } from "./favoriteState";
 
 const renderScene = SceneMap({
   recipe: MainTab,
@@ -43,13 +43,40 @@ function App(){
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  
+
+  const [favoriteIds, setFavoriteIds] = React.useState<number[]>([11007]);
+
+  /*
+  const [favoriteIds, dispatch] = useReducer(favoriteReducer, [11007]);
+  function addFavorite(id: number){
+    dispatch({
+      id: id,
+      type: ActionType.AddFavorite
+    });
+  }
+  function removeFavorite(id: number){
+    dispatch({
+      id: id,
+      type: ActionType.RemoveFavorite
+    });
+  }*/
+
   return (
     <View style={{
       width: layout.width,
       height: layout.height
     }}>
-      <GlobalContext.Provider value={defaultValue}>
+      <GlobalContext.Provider value={{
+        addFavorite: (id) => {
+          if(favoriteIds.indexOf(id) === -1){
+            setFavoriteIds([...favoriteIds, id]);
+          }
+        },
+        removeFavorite: (id) => {
+          setFavoriteIds(favoriteIds.filter((i) => i != id));
+        },
+        favoriteIds
+      }}>
         <StatusBar
           barStyle={isDarkMode ? "light-content" : "dark-content"}
           backgroundColor={backgroundStyle.backgroundColor}

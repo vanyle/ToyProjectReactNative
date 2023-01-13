@@ -1,29 +1,40 @@
 import React from "react"
 
 type GlobalStateType = {
-    getFavorites: () => number[],
     addFavorite: (id: number) => void,
     removeFavorite: (id: number) => void,
-    addListener: (cb: (f: number[]) => void) => void;
-}
+    favoriteIds: number[]
+};
 
-let favorites: number[] = [11007];
-const listeners: ((n: number[]) => void)[] = [];
-export const defaultValue = {
-    getFavorites: () => {
-        return favorites;
+export const GlobalContext = React.createContext<GlobalStateType>({
+    addFavorite: () => {
+        // ...
     },
-    addFavorite: (id: number) => {
-        favorites.push(id);
-        listeners.forEach((e) => e(favorites));
+    removeFavorite: () => {
+        // ...
     },
-    removeFavorite: (id: number) => {
-        favorites = favorites.filter((i) => i !== id);
-        listeners.forEach((e) => e(favorites));
-    },
-    addListener: (callback: (n: number[]) => void) => {
-        listeners.push(callback);
+    favoriteIds: []
+});
+
+export enum ActionType{
+    AddFavorite,
+    RemoveFavorite
+}
+type Action = {
+    id: number,
+    type: ActionType
+}
+export function favoriteReducer(favorites: number[], action: Action){
+    switch(action.type){
+        case ActionType.AddFavorite:
+            if(favorites.indexOf(action.id) === -1){
+                return [...favorites, action.id];
+            }else{
+                return favorites;
+            }
+            break;
+        case ActionType.RemoveFavorite:
+            return favorites.filter((i) => i != action.id);
+            break;
     }
 }
-
-export const GlobalContext = React.createContext<GlobalStateType>(defaultValue);

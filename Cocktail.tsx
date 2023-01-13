@@ -18,17 +18,15 @@ type CocktailProps = {
 };
 
 class Cocktail extends Component<CocktailProps> {
-  state: {name: string, isFavorite: boolean, description: string} = {
+  state: {name: string, description: string} = {
     name: "",
-    description: "",
-    isFavorite: false,
+    description: ""
   }
 
   constructor(props: CocktailProps){
     super(props);
     
     this.state.name = props.name;
-    this.state.isFavorite = false;
     this.state.description = props.description;
   }
 
@@ -43,6 +41,8 @@ class Cocktail extends Component<CocktailProps> {
 
   render(){
     return (
+      <GlobalContext.Consumer>
+        {({favoriteIds}) => (
     <View
       style={{
         justifyContent: "space-between",
@@ -83,19 +83,16 @@ class Cocktail extends Component<CocktailProps> {
         </View>
         </TouchableOpacity>
         <Icon reverse name='star' onPress={() => {
-          if(!this.state.isFavorite){
+          if(!(favoriteIds.indexOf(this.props.id) !== -1)){
             Toast.show(this.state.name + " added to favorites.", 2, {});
           }else{
             Toast.show(this.state.name + " removed from favorites.", 2, {});
           }
-          this.props.onFavorite(!this.state.isFavorite);
-          this.setState((state: {isFavorite: boolean}) => {
-            return {
-              isFavorite: !state.isFavorite
-            }
-          })
-        }} size={15} color={this.state.isFavorite ? "#000" : "#cc0"} type='font-awesome'></Icon>
+          this.props.onFavorite(!(favoriteIds.indexOf(this.props.id) !== -1));
+        }} size={15} color={favoriteIds.indexOf(this.props.id) !== -1 ? "#000" : "#cc0"} type='font-awesome'></Icon>
     </View>
+        )}
+    </GlobalContext.Consumer>
     )
   }
 }
