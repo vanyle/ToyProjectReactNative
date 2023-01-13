@@ -45,6 +45,7 @@ function MainTab(){
                     }else{
                         removeFavorite(cocktailId);
                     }
+                    console.log("fav edit: ",favoriteIds);
                 }}
                 fetchUrl={"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + searchQuery}
             />
